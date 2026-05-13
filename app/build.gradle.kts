@@ -37,9 +37,11 @@ android {
         viewBinding = true
     }
 
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
 }
 
 dependencies {
