@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.anapaolaloredo.proyectofinalprueba.databinding.ActivityLoginBinding
+import com.anapaolaloredo.proyectofinalprueba.viewmodel.AuthViewModel
 
 
 class LoginActivity : AppCompatActivity() {
@@ -31,19 +32,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupTabs() {
-        // Toggle entre Login y Registro
-        binding.btnTabLogin.setOnClickListener {
-            binding.btnLogin.text = "Iniciar Sesión"
-            // aquí puedes mostrar/ocultar campos extra si registro tiene más campos
-        }
-        binding.btnTabRegister.setOnClickListener {
-            binding.btnLogin.text = "Registrarse"
-        }
+        setTab(isLogin = true)
+
+        binding.btnTabLogin.setOnClickListener { setTab(isLogin = true) }
+        binding.btnTabRegister.setOnClickListener { setTab(isLogin = false) }
 
         binding.btnLogin.setOnClickListener {
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
-
             if (binding.btnLogin.text == "Iniciar Sesión") {
                 viewModel.login(username, password)
             } else {
@@ -52,6 +48,21 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun setTab(isLogin: Boolean) {
+        if (isLogin) {
+            binding.btnTabLogin.setBackgroundResource(R.drawable.bg_tab_selected)
+            binding.btnTabLogin.setTextColor(0xFFFFFFFF.toInt())
+            binding.btnTabRegister.setBackgroundResource(android.R.color.transparent)
+            binding.btnTabRegister.setTextColor(0xFF8899BB.toInt())
+            binding.btnLogin.text = "Iniciar Sesión"
+        } else {
+            binding.btnTabRegister.setBackgroundResource(R.drawable.bg_tab_selected)
+            binding.btnTabRegister.setTextColor(0xFFFFFFFF.toInt())
+            binding.btnTabLogin.setBackgroundResource(android.R.color.transparent)
+            binding.btnTabLogin.setTextColor(0xFF8899BB.toInt())
+            binding.btnLogin.text = "Registrarse"
+        }
+    }
     private fun observeViewModel() {
         viewModel.authResult.observe(this) { state ->
             when (state) {

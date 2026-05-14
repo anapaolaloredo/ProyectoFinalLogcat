@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anapaolaloredo.proyectofinalprueba.databinding.ActivityMainBinding
 import com.anapaolaloredo.proyectofinalprueba.ui.AddHabitFragment
 import com.anapaolaloredo.proyectofinalprueba.ui.HabitAdapter
+import com.anapaolaloredo.proyectofinalprueba.ui.ProfileFragment
 import com.anapaolaloredo.proyectofinalprueba.viewmodel.HabitViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -70,11 +71,10 @@ class MainActivity : AppCompatActivity() {
             AddHabitFragment().show(supportFragmentManager, "AddHabit")
         }
 
-        binding.btnLogout.setOnClickListener {
-            viewModel.cerrarSesion()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+        binding.btnProfile.setOnClickListener {
+            ProfileFragment().show(supportFragmentManager, "Profile")
         }
+
     }
 
     private fun mostrarFechaYSaludo() {

@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:hint="Ej: Ejercicio diario"
-        android:hintTextColor="#556080"
+        android:textColorHint="#556080"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:background="@drawable/bg_input"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:hint="Ej: 30 minutos de cardio"
-        android:hintTextColor="#556080"
+        android:textColorHint="#556080"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:background="@drawable/bg_input"
@@ -83,4 +83,5 @@
             android:background="@drawable/bg_button_primary"
             android:stateListAnimator="@null" />
     </LinearLayout>
+
 </LinearLayout>
