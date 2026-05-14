@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -37,32 +38,31 @@ android {
         viewBinding = true
     }
 
-
     kotlinOptions {
         jvmTarget = "11"
     }
-
 }
 
 dependencies {
-    implementation(libs.retrofit)                      // Cliente HTTP
-    implementation(libs.converter.gson)                // Convertidor JSON -> Kotlin
-    implementation(platform(libs.okhttp.bom))          // BOM para versiones compatibles
-    implementation(libs.okhttp)                        // OkHttp (transporte HTTP)
-    implementation(libs.okhttp.logging)                // Logging de peticiones
-
-    // --- NUEVO: Carga de imagenes ---
-    implementation(libs.coil)                          // Coil
-
-    // --- NUEVO: Coroutines ---
-    implementation(libs.kotlinx.coroutines.android)    // Operaciones asincronas
-
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.coil)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
+    testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#1C2A4A">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Hábito"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/etNombreHabito"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:hint="Ej: Ejercicio diario"
+        android:hintTextColor="#556080"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:background="@drawable/bg_input"
+        android:paddingHorizontal="16dp"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripción"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/etDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:hint="Ej: 30 minutos de cardio"
+        android:hintTextColor="#556080"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:background="@drawable/bg_input"
+        android:paddingHorizontal="16dp"
+        android:inputType="text"
+        android:layout_marginBottom="24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Cancelar"
+            android:textColor="#8899BB"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Guardar"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_button_primary"
+            android:stateListAnimator="@null" />
+    </LinearLayout>
+</LinearLayout>

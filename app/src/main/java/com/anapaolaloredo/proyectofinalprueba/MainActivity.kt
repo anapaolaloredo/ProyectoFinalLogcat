@@ -1,47 +1,85 @@
 package com.anapaolaloredo.proyectofinalprueba
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import com.google.gson.annotations.SerializedName
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.anapaolaloredo.proyectofinalprueba.databinding.ActivityMainBinding
+import com.anapaolaloredo.proyectofinalprueba.ui.AddHabitFragment
+import com.anapaolaloredo.proyectofinalprueba.ui.HabitAdapter
+import com.anapaolaloredo.proyectofinalprueba.viewmodel.HabitViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: HabitViewModel
+    private lateinit var adapter: HabitAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val tvQuote = findViewById<TextView>(R.id.tvQuote)
-        val tvAuthor = findViewById<TextView>(R.id.tvAuthor)
+        viewModel = ViewModelProvider(this)[HabitViewModel::class.java]
 
-        // 🔹 Retrofit
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://zenquotes.io/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        setupRecyclerView()
+        observeViewModel()
+        setupListeners()
+        mostrarFechaYSaludo()
+    }
 
-        val api = retrofit.create(QuoteApi::class.java)
+    private fun setupRecyclerView() {
+        adapter = HabitAdapter(
+            onComplete = { habit -> viewModel.completarHabito(habit) },
+            onDelete = { habit -> viewModel.eliminarHabito(habit) }
+        )
+        binding.rvHabits.layoutManager = LinearLayoutManager(this)
+        binding.rvHabits.adapter = adapter
+    }
 
-        // 🔥 llamada directa
-        lifecycleScope.launch {
-            try {
-                val response = api.getQuote()
-                val quote = response.firstOrNull()
+    private fun observeViewModel() {
+        viewModel.habitos.observe(this) { habitos ->
+            adapter.submitList(habitos)
 
-                quote?.let {
-                    tvQuote.text = it.text
-                    tvAuthor.text = it.author
-                }
+            val total = habitos.size
+            val completados = habitos.count { it.completadoHoy }
+            val rachaMax = habitos.maxOfOrNull { it.racha } ?: 0
+            val porcentaje = HabitUtils.calcularPorcentaje(completados, total)
 
-            } catch (e: Exception) {
-                tvQuote.text = "Error al cargar"
+            binding.tvStreak.text = rachaMax.toString()
+            binding.tvTodayProgress.text = "$completados/$total"
+            binding.tvPercent.text = "$porcentaje%"
+            binding.cardEmpty.visibility = if (habitos.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        viewModel.quote.observe(this) { quote ->
+            quote?.let {
+                binding.tvQuote.text = "\"${it.text}\""
+                binding.tvAuthor.text = "— ${it.author}"
             }
         }
+    }
+
+    private fun setupListeners() {
+        binding.btnAddHabit.setOnClickListener {
+            AddHabitFragment().show(supportFragmentManager, "AddHabit")
+        }
+
+        binding.btnLogout.setOnClickListener {
+            viewModel.cerrarSesion()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
+
+    private fun mostrarFechaYSaludo() {
+        val sdf = SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy", Locale("es", "MX"))
+        binding.tvDate.text = sdf.format(Date())
+        binding.tvGreeting.text = "¡Hola, ${viewModel.username}!"
     }
 }
